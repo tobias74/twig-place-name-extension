@@ -1,0 +1,14 @@
+{
+    "name": "tobias74/twig-place-name-extension",
+    "description": "a Twig-Extension using google places-api",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Tobias74\\": "src/"
+        }
+    },
+    "require": {
+        "tobias74/reverse-geocoder-cache": "@dev",
+    }
+}
