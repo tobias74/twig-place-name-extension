@@ -9,6 +9,5 @@
         }
     },
     "require": {
-        "tobias74/reverse-geocoder-cache": "@dev"
     }
 }
