@@ -9,6 +9,6 @@
         }
     },
     "require": {
-        "tobias74/reverse-geocoder-cache": "@dev",
+        "tobias74/reverse-geocoder-cache": "@dev"
     }
 }
