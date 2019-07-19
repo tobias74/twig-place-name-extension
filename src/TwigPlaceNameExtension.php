@@ -30,6 +30,9 @@ class TwigPlaceNameExtension extends AbstractExtension
 
         $addressComponents = $placeData['address_components'];
 
+        $shortPlaceName = '';
+        $cityName = '';
+
         if (is_array($addressComponents)) {
             $sublocalities = array_merge(array_filter($addressComponents, function ($element) {
                 return false !== array_search('sublocality', $element['types']);
@@ -38,10 +41,11 @@ class TwigPlaceNameExtension extends AbstractExtension
                 return false !== array_search('locality', $element['types']);
             }));
 
-            $shortPlaceName = '';
             if (isset($localities[0])) {
                 $shortPlaceName .= $localities[0]['short_name'];
+                $cityName = $localities[0]['short_name'];
             }
+
             if (isset($sublocalities[0])) {
                 $shortPlaceName .= ', '.$sublocalities[0]['short_name'];
             }
@@ -49,9 +53,13 @@ class TwigPlaceNameExtension extends AbstractExtension
             $shortPlaceName = '';
         }
 
-        $placeData['short_place_name'] = $shortPlaceName;
+        //error_log(print_r($placeData, true));
 
-        return $placeData;
+        return array(
+            'city_name' => $cityName,
+            'short_place_name' => $shortPlaceName,
+            'formatted_address' => $placeData['formatted_address'],
+        );
     }
 
     public function getFunctions()
@@ -59,7 +67,13 @@ class TwigPlaceNameExtension extends AbstractExtension
         return [
             new TwigFunction('shortPlaceName', [$this, 'getShortPlaceName']),
             new TwigFunction('placeName', [$this, 'getPlaceName']),
+            new TwigFunction('cityName', [$this, 'getCityName']),
         ];
+    }
+
+    public function getCityName($lat, $lon)
+    {
+        return $this->getPlaceNameInfo($lat, $lon)['city_name'];
     }
 
     public function getShortPlaceName($lat, $lon)
